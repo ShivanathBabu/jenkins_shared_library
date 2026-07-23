@@ -20,11 +20,13 @@ def call(configMap) {
        stages {
             stage("app version"){
                 steps {
+                    script {
                       // Read the file object directly
                     def packageJson = readJSON file: 'package.json'
                     appVersion = packageJson.version
                     def name = packageJson.name
                     echo "Building ${name} version ${appVersion}"
+                    }
 
                 }
             }
