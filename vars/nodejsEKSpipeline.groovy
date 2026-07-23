@@ -31,7 +31,39 @@ def call(configMap) {
                 }
             }
 
-            stage("Install Dependencies"){
+            stage('Debug') {
+    steps {
+        sh '''
+            echo "===== USER ====="
+            whoami
+            id
+
+            echo "===== SUDO ====="
+            sudo -n whoami
+
+            echo "===== NODE ====="
+            node -v || true
+            npm -v || true
+
+            echo "===== SUDO PATH ====="
+            which sudo
+            sudo -V | head -1
+        '''
+    }
+}
+
+stage("Install Dependencies") {
+    steps {
+        sh '''
+            sudo -n dnf module disable nodejs -y
+            sudo -n dnf module enable nodejs:20 -y
+            sudo -n dnf install nodejs -y
+            npm install
+        '''
+    }
+}
+
+         /*    stage("Install Dependencies"){
                 steps{
                     script{
                         sh """
@@ -42,7 +74,7 @@ def call(configMap) {
                         """
                     }
                 }
-            }
+            } */
 
             stage("unit testing"){
                 steps{
