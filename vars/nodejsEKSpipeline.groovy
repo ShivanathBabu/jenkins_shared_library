@@ -7,8 +7,8 @@ def call(configMap) {
         environment {
             REGION = "us-east-1"
             ACC_ID = "139355608147"
-            COMPONENT = configMap.get('PROJECT')
-            PROJECT = configMap.get('COMPONENT')
+            COMPONENT = configMap.get('COMPONENT')
+            PROJECT = configMap.get('PROJECT')
             appVersion = ''
 
         }
@@ -39,7 +39,6 @@ def call(configMap) {
                            sudo dnf module enable nodejs:20 -y
                            sudo dnf install nodejs -y 
                            npm install
-
                         """
                     }
                 }
@@ -57,7 +56,7 @@ def call(configMap) {
                     scannerHome = tool 'sonar-7.2' //sonarqube server environment
                  }
                  steps {
-                    dir {'catalogue'} {
+                    dir('catalogue') {
                     script {
                     withSonarQubeEnv('sonar-7.2') {
                         sh "${scannerHome}/bin/sonar-scanner"
