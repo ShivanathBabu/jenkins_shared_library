@@ -22,9 +22,9 @@ def call(configMap) {
                 steps {
                       // Read the file object directly
                     def packageJson = readJSON file: 'package.json'
-                        appVersion = packageJson.version
+                    appVersion = packageJson.version
                     def name = packageJson.name
-                        echo "Building ${name} version ${appVersion}"
+                    echo "Building ${name} version ${appVersion}"
 
                 }
             }
@@ -49,17 +49,20 @@ def call(configMap) {
                 }
             }
 
-            stage("sonarqube"){
+            stage('sonar scan'){
+                
                  environment {
                     scannerHome = tool 'sonar-7.2' //sonarqube server environment
                  }
-                 script {
+                 steps {
                     dir {'catalogue'} {
+                    script {
                     withSonarQubeEnv('sonar-7.2') {
                         sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                    }
+                     }
+                   }
                  }
+              }
             }
 
             stage('Quality Gate') {
